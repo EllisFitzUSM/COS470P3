@@ -17,6 +17,7 @@ import os
 def main():
 	parser = ap.ArgumentParser('Doc2Query using Transformers')
 	parser.add_argument('answers', type=str, help='Answers.json file to generate queries from.')
+	parser.add_argument('llama_model_path', type='str', help='Path to local pretrained LLaMa model.')
 	parser.add_argument('-t', '--token', type=str, help='HF token')
 	parser.add_argument('-c', '--cache', type=str, help='HF_HOME/cache path.', default='.')
 	parser.add_argument('-tc', '--clamp', type=int, help='Clamp answer amount', default=None)
@@ -37,26 +38,26 @@ def main():
 		answers_dict = dict(itertools.islice(answers_dict.items(), args.clamp))
 
 	# As functions says
-	doc2query(answers_dict)
+	doc2query(llama_model_path, answers_dict)
 
 # Generate queries from documents (answers).
-def doc2query(answers_dict):
+def doc2query(llama_model_path, answers_dict):
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-	msmarco_dict = []
-	beir_dict = []
+	# msmarco_dict = []
+	# beir_dict = []
 	llama_dict = []
 	# Do all query-generation at the same time.
 	try:
-		msmarco_process = mp.Process(target=msmarco_doc2query, args=(answers_dict,msmarco_dict,device))
-		beir_process = mp.Process(target=beir_doc2query, args=(answers_dict,beir_dict,device))
+		# msmarco_process = mp.Process(target=msmarco_doc2query, args=(answers_dict,msmarco_dict,device))
+		# beir_process = mp.Process(target=beir_doc2query, args=(answers_dict,beir_dict,device))
 		llama_process = mp.Process(target=llama_doc2query, args=(answers_dict,llama_dict,device))
 
-		msmarco_process.start()
-		beir_process.start()
+		# msmarco_process.start()
+		# beir_process.start()
 		llama_process.start()
 
-		msmarco_process.join()
-		beir_process.join()
+		# msmarco_process.join()
+		# beir_process.join()
 		llama_process.join()
 	except KeyboardInterrupt:
 		sys.exit()
