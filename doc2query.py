@@ -96,7 +96,7 @@ def llama_doc2query(llama_model_path, answers_dict, llama_dict, device):
 	# model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 	pipeline = transformers.pipeline(
 		"text-generation",
-		model=LlamaForCausalLM.from_pretrained(llama_model_path, device_map=device),
+		model=llama_model_path,
 		model_kwargs={"torch_dtype": torch.bfloat16},
 		device_map=device
 	)
@@ -115,5 +115,5 @@ def llama_doc2query(llama_model_path, answers_dict, llama_dict, device):
 		json.dump(llama_dict, outfile, indent = 4)
 
 if __name__ == '__main__':
-	torch.multiprocessing.set_start_method('spawn', force=True)
+	# torch.multiprocessing.set_start_method('spawn', force=True)
 	main()
