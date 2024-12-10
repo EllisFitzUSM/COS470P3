@@ -1,4 +1,4 @@
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer, T5ForConditionalGeneration, LlamaForCausalLM
 from huggingface_hub import login
 import multiprocessing as mp
 import argparse as ap
@@ -38,7 +38,7 @@ def main():
 		answers_dict = dict(itertools.islice(answers_dict.items(), args.clamp))
 
 	# As functions says
-	doc2query(llama_model_path, answers_dict)
+	doc2query(args.llama_model_path, answers_dict)
 
 # Generate queries from documents (answers).
 def doc2query(llama_model_path, answers_dict):
@@ -50,7 +50,7 @@ def doc2query(llama_model_path, answers_dict):
 	try:
 		# msmarco_process = mp.Process(target=msmarco_doc2query, args=(answers_dict,msmarco_dict,device))
 		# beir_process = mp.Process(target=beir_doc2query, args=(answers_dict,beir_dict,device))
-		llama_process = mp.Process(target=llama_doc2query, args=(answers_dict,llama_dict,device))
+		llama_process = mp.Process(target=llama_doc2query, args=(llama_model_path,answers_dict,llama_dict,device))
 
 		# msmarco_process.start()
 		# beir_process.start()
@@ -91,11 +91,11 @@ def beir_doc2query(answers_dict, beir_dict, device):
 		json.dump(beir_dict, outfile, indent = 4)
 
 # LLaMa 3.1 8B Instruct
-def llama_doc2query(answers_dict, llama_dict, device):
-	model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+def llama_doc2query(llama_model_path, answers_dict, llama_dict, device):
+	# model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 	pipeline = transformers.pipeline(
 		"text-generation",
-		model=model_name,
+		model=LlamaForCausalLM.from_pretrained(llama_model_path, device_map=device),
 		model_kwargs={"torch_dtype": torch.bfloat16},
 		device_map=device
 	)
