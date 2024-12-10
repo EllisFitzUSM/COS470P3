@@ -1,0 +1,74 @@
+#    Model                                       NDCG@5    NDCG@10    P@5       P@10      MAP         BPref  MRR
+---  ------------------------------------------  --------  ---------  --------  --------  --------  -------  --------
+a    results\res_BM25_1                          0.408ᵇᶜᵈ  0.428ᵇᶜᵈ   0.372ᵇᶜᵈ  0.246ᵇᶜᵈ  0.341ᵇᶜᵈ      nan  0.708ᵇᶜᵈ
+b    results\res_BM25_doc2query_LLaMa_best_1     0.239     0.261      0.225     0.159     0.196         nan  0.485
+c    results\res_BM25_doc2query_LLaMa_triplet_1  0.311ᵇ    0.334ᵇ     0.297ᵇ    0.204ᵇ    0.268ᵇ        nan  0.581ᵇ
+d    results\res_BM25_query2doc_1                0.337ᵇᶜ   0.359ᵇᶜ    0.307ᵇ    0.211ᵇ    0.283ᵇ        nan  0.607ᵇ========================
+% Add in preamble
+\usepackage{graphicx}
+\usepackage{booktabs}
+========================
+
+
+% To change the table size, act on the resizebox argument `0.8`.
+\begin{table*}[ht]
+\centering
+\caption{
+Overall effectiveness of the models.
+The best results are highlighted in boldface.
+Superscripts denote significant differences in paired Student's t-test with $p \le 0.01$.
+}
+\resizebox{0.8\textwidth}{!}{
+\begin{tabular}{c|l|c|c|c|c|c|c|c}
+\toprule
+\textbf{\#}
+& \textbf{Model}
+& \textbf{NDCG@5}
+& \textbf{NDCG@10}
+& \textbf{P@5}
+& \textbf{P@10}
+& \textbf{MAP}
+& \textbf{BPref}
+& \textbf{MRR} \\ 
+\midrule
+a &
+results\res\_BM25\_1 &
+\textbf{0.408}$^{bcd}$\hphantom{} &
+\textbf{0.428}$^{bcd}$\hphantom{} &
+\textbf{0.372}$^{bcd}$\hphantom{} &
+\textbf{0.246}$^{bcd}$\hphantom{} &
+\textbf{0.341}$^{bcd}$\hphantom{} &
+nan\hphantom{$^{bcd}$} &
+\textbf{0.708}$^{bcd}$\hphantom{} \\
+b &
+results\res\_BM25\_doc2query\_LLaMa\_best\_1 &
+0.239\hphantom{$^{acd}$} &
+0.261\hphantom{$^{acd}$} &
+0.225\hphantom{$^{acd}$} &
+0.159\hphantom{$^{acd}$} &
+0.196\hphantom{$^{acd}$} &
+nan\hphantom{$^{acd}$} &
+0.485\hphantom{$^{acd}$} \\
+c &
+results\res\_BM25\_doc2query\_LLaMa\_triplet\_1 &
+0.311$^{b}$\hphantom{$^{ad}$} &
+0.334$^{b}$\hphantom{$^{ad}$} &
+0.297$^{b}$\hphantom{$^{ad}$} &
+0.204$^{b}$\hphantom{$^{ad}$} &
+0.268$^{b}$\hphantom{$^{ad}$} &
+nan\hphantom{$^{abd}$} &
+0.581$^{b}$\hphantom{$^{ad}$} \\
+d &
+results\res\_BM25\_query2doc\_1 &
+0.337$^{bc}$\hphantom{$^{a}$} &
+0.359$^{bc}$\hphantom{$^{a}$} &
+0.307$^{b}$\hphantom{$^{ac}$} &
+0.211$^{b}$\hphantom{$^{ac}$} &
+0.283$^{b}$\hphantom{$^{ac}$} &
+nan\hphantom{$^{abc}$} &
+0.607$^{b}$\hphantom{$^{ac}$} \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:results}
+\end{table*}
