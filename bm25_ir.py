@@ -7,8 +7,8 @@ import os
 # Simple PyTerrier BM25-Okapi Wrapper Class
 class BM25(object):
 
-	def __init__(self, answers_path, index_save):
-		self.answers_path = answers_path
+	def __init__(self, corpus_path_or_list, index_save):
+		self.answers_path_or_list = corpus_path_or_list
 		self.index_ref = self.get_bm25_index_ref(index_save)
 
 	def get_bm25_index_ref(self, index_save):
@@ -20,7 +20,12 @@ class BM25(object):
 											overwrite=True,
 											stopwords=my_util.get_stopwords(),
 											tokeniser='english')
-			docs_df: pd.DataFrame = pd.DataFrame(json.load(open(self.answers_path, 'r', encoding='utf-8')))
+			if isinstance(self.answers_path_or_list, list):
+				docs_df: pd.DataFrame = pd.DataFrame(self.answers_path_or_list)
+			elif isinstance(self.answers_path_or_list, str):
+				docs_df: pd.DataFrame = pd.DataFrame(json.load(open(self.answers_path_or_list, 'r', encoding='utf-8')))
+			else:
+				raise Exception('The answers_path_or_list has to be a list or a string.')
 			docs_df.rename({'Id': 'docno', 'Text': 'text'}, axis='columns', inplace=True)
 			pt_indexer.index(docs_df[['text', 'docno']].to_dict(orient='records'))
 		return os.path.join(index_abs_path, 'data.properties')
