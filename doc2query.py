@@ -17,7 +17,7 @@ import os
 def main():
 	parser = ap.ArgumentParser('Doc2Query using Transformers')
 	parser.add_argument('answers', type=str, help='Answers.json file to generate queries from.')
-	parser.add_argument('llama_model_path', type='str', help='Path to local pretrained LLaMa model.')
+	parser.add_argument('llama_model_path', type=str, help='Path to local pretrained LLaMa model.')
 	parser.add_argument('-t', '--token', type=str, help='HF token')
 	parser.add_argument('-c', '--cache', type=str, help='HF_HOME/cache path.', default='.')
 	parser.add_argument('-tc', '--clamp', type=int, help='Clamp answer amount', default=None)
