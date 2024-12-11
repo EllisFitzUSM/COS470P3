@@ -29,6 +29,10 @@ def main():
 		evaluate(qrel, p5_run, metrics='precision@5', return_mean=False)
 		df = pd.DataFrame(list(p5_run.scores['precision@5'].items()), columns=['qID', 'precision@5'])
 		df.sort_values(by=['precision@5'], ascending=False, inplace=True)
+		first_and_last = df.iloc[[0, -1]]
+		print(re.sub("_", " ", run.name[12:-2]))
+		print(first_and_last)
+		input()
 		df.plot(x='qID',
 				y='precision@5',
 				kind='bar',
