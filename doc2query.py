@@ -153,8 +153,6 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 								 pad_token_id=tokenizer.eos_token_id)
 		# Decode and append answer
 		generated_answer = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)[0]
-		print(generated_answer)
-		input()
 		llama_list.append({'Id': topic_id, 'Text': generated_answer})
 
 	# Dump to file
