@@ -50,7 +50,7 @@ def doc2query(llama_model_path, answers_dict):
 		# msmarco_process = mp.Process(target=msmarco_doc2query, args=(answers_dict,msmarco_dict,device))
 		# beir_process = mp.Process(target=beir_doc2query, args=(answers_dict,beir_dict,device))
 		model_kwargs = {'min_new_tokens': 128, 'max_new_tokens': 512, 'num_return_sequences': 3}
-		llama_process = mp.Process(target=llama_doc2query, args=(llama_model_path,answers_dict,llama_list, model_kwargs))
+		llama_process = mp.Process(target=llama_doc2query, args=(llama_model_path,answers_dict,llama_list,'Doc2Queries.json',model_kwargs))
 
 		# msmarco_process.start()
 		# beir_process.start()
