@@ -152,8 +152,8 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 								 generation_config=model.generation_config,
 								 pad_token_id=tokenizer.eos_token_id)
 		# Decode and append answer
-		generated_answer = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)[0]
-		llama_list.append({'Id': topic_id, 'Text': generated_answer})
+		generated_answers = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)
+		llama_list.append({'Id': topic_id, 'Text': generated_answers})
 
 	# Dump to file
 	with open(f'{output_filename}.json', 'w', encoding='utf-8') as outfile:
