@@ -166,7 +166,9 @@ def get_llama_model(model_name_or_path, device, **kwargs):
 											 device_map=device,
 											 torch_dtype=kwargs.get('torch_dtype', torch.bfloat16))
 	model.generation_config.min_new_tokens = kwargs.get('min_new_tokens', 512)
+	print(f'Min New Tokens: {kwargs.get("min_new_tokens", 512)}')
 	model.generation_config.max_new_tokens = kwargs.get('max_new_tokens', 1024)
+	print(f'Max New Tokens: {kwargs.get("max_new_tokens", 1024)}')
 	model.generation_config.do_sample = kwargs.get('do_sample', True)
 	model.generation_config.num_return_sequences = kwargs.get('num_return_sequences', 1)
 	model = model.to(device)
