@@ -169,6 +169,8 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 									pad_token_id=tokenizer.eos_token_id
 								   )
 	for id, prompt, output in zip(ids, prompts, tensor_output):
+		print(type(prompt))
+		print(type(prompt[0]))
 		decoded_response = tokenizer.batch_decode(output[:, prompt.shape[1]:],skip_special_tokens = True)
 		llama_list.append({'Id': id, 'Text': decoded_response})
 
