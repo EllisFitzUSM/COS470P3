@@ -139,21 +139,38 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 		 'content': "Film plots explained badly. Everybody slept for most of the movie. An Apple computer discovered some plant and eventually make everyone do exercise. It’s a Shakespeare adaptation but with cats and monkeys. 90+ year old government employee convinced a group of friends to betray his country. Sport athlete got caught by the police and forced to do manual labor, ended up learning humility and got sweet sponsorships. Man killed a dog then died because a woman brought him home. Genius with superiority complex abandoned job offers to chase some girl he met in a bar. Middle age man with unorthodox diet help chasing someone obsessed with skincare products. A son understood his immigrant father more after he went to Europe and fell in love with a girl. Two men arrived in Los Angeles seeking a young kid. You’d want to root for the more muscular one."}
 	]
 
-	for topic_id, topic in tqdm(list(answers_dict.items()), desc='Generating LLaMa Answer From Query', colour='blue'):
-		# Tokenize and apply template to prompt
+	ids = []
+	prompts = []
+	for topic_id, topic in tqdm(list(answers_dict.items()), desc='Doc2Query Prompt Formatting', colour='blue'):
 		dict_list_prompt = few_shot_messages + [{'role': 'user', 'content': str(topic)}]
 		tokenized_prompt = tokenizer.apply_chat_template(dict_list_prompt,
-														   add_generation_prompt=True,
-														   return_tensors='pt',
-														   padding=True
-														   ).to(device=device)
-		# Generate questions
-		outputs = model.generate(inputs=tokenized_prompt,
-								 generation_config=model.generation_config,
-								 pad_token_id=tokenizer.eos_token_id)
-		# Decode and append answer
-		generated_answers = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)
-		llama_list.append({'Id': topic_id, 'Text': generated_answers})
+														 add_generation_prompt=True,
+														 return_tensors='pt',
+														 padding=True).to(device=device)
+		prompts.append(tokenized_prompt)
+		ids.append(topic_id)
+	# for topic_id, topic in tqdm(list(answers_dict.items()), desc='Generating LLaMa Answer From Query', colour='blue'):
+	# 	# Tokenize and apply template to prompt
+	# 	dict_list_prompt = few_shot_messages + [{'role': 'user', 'content': str(topic)}]
+	# 	tokenized_prompt = tokenizer.apply_chat_template(dict_list_prompt,
+	# 													   add_generation_prompt=True,
+	# 													   return_tensors='pt',
+	# 													   padding=True
+	# 													   ).to(device=device)
+	# 	# Generate questions
+	# 	outputs = model.generate(inputs=tokenized_prompt,
+	# 							 generation_config=model.generation_config,
+	# 							 pad_token_id=tokenizer.eos_token_id)
+	# 	# Decode and append answer
+	# 	generated_answers = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)
+	# 	llama_list.append({'Id': topic_id, 'Text': generated_answers})
+	tensor_output = model.generate(inputs = prompts,
+									generation_config=model.generation_config,
+									pad_token_id=tokenizer.eos_token_id
+								   )
+	for id, prompt, output in zip(ids, prompts, tensor_output):
+		decoded_response = tokenizer.batch_decode(output[:, prompt.shape[1]:],skip_special_tokens = True)
+		llama_list.append({'Id': id, 'Text': decoded_response})
 
 	# Dump to file
 	with open(f'{output_filename}.json', 'w', encoding='utf-8') as outfile:
