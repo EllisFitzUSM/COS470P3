@@ -1,5 +1,6 @@
 from transformers import T5Tokenizer, T5ForConditionalGeneration, LlamaForCausalLM, AutoTokenizer
 from huggingface_hub import login
+import torch.nn.functional as F
 import multiprocessing as mp
 import argparse as ap
 from tqdm import tqdm
@@ -149,7 +150,9 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 														 padding=True).to(device=device)
 		prompts.append(tokenized_prompt)
 		ids.append(topic_id)
-	tensor_stack = torch.stack(prompts).to(device=device)
+	max_size = max(tensor.shape[1] for tensor in tqdm(prompts, desc='Padding Prompts'))  # Find the maximum size along the second dimension
+	padded_tensors = [F.pad(tensor, (0, max_size - tensor.shape[1]), value=tokenizer.eos_token_id) for tensor in prompts]
+	tensor_stack = torch.stack(padded_tensors).to(device=device)
 	# for topic_id, topic in tqdm(list(answers_dict.items()), desc='Generating LLaMa Answer From Query', colour='blue'):
 	# 	# Tokenize and apply template to prompt
 	# 	dict_list_prompt = few_shot_messages + [{'role': 'user', 'content': str(topic)}]
