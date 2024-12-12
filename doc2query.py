@@ -149,6 +149,7 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 														 padding=True).to(device=device)
 		prompts.append(tokenized_prompt)
 		ids.append(topic_id)
+	tensor_stack = torch.stack(prompts).to(device=device)
 	# for topic_id, topic in tqdm(list(answers_dict.items()), desc='Generating LLaMa Answer From Query', colour='blue'):
 	# 	# Tokenize and apply template to prompt
 	# 	dict_list_prompt = few_shot_messages + [{'role': 'user', 'content': str(topic)}]
@@ -164,13 +165,11 @@ def llama_doc2query(model_name_or_path, answers_dict, llama_list, output_filenam
 	# 	# Decode and append answer
 	# 	generated_answers = tokenizer.batch_decode(outputs[:, tokenized_prompt.shape[1]:],skip_special_tokens = True)
 	# 	llama_list.append({'Id': topic_id, 'Text': generated_answers})
-	tensor_output = model.generate(inputs = prompts,
+	tensor_output = model.generate(inputs = tensor_stack,
 									generation_config=model.generation_config,
 									pad_token_id=tokenizer.eos_token_id
 								   )
 	for id, prompt, output in zip(ids, prompts, tensor_output):
-		print(type(prompt))
-		print(type(prompt[0]))
 		decoded_response = tokenizer.batch_decode(output[:, prompt.shape[1]:],skip_special_tokens = True)
 		llama_list.append({'Id': id, 'Text': decoded_response})
 
