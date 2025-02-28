@@ -10,10 +10,10 @@ What this repository finds is Doc2Query is less performant, as it removes contex
 
 | x | Model | NDCG@5 | NDCG@10 | P@5 | P@10 | MAP | BPref | MRR |
 |:- | :----  | :----- | :------ | :-- | :--- | :-- | :---- | :-- |
-| a | results\res_BM25_1   | 0.408ᵇᶜᵈ | 0.428ᵇᶜᵈ | 0.372ᵇᶜᵈ | 0.246ᵇᶜᵈ | 0.341ᵇᶜᵈ | nan | 0.708ᵇᶜᵈ |
-| b | results\res_BM25_doc2query_LLaMa_best_1 | 0.239 | 0.261 | 0.225 | 0.159 | 0.196 | nan | 0.485 |
-| c |results\res_BM25_doc2query_LLaMa_triplet_1 | 0.311ᵇ | 0.334ᵇ | 0.297ᵇ | 0.204ᵇ | 0.268ᵇ | nan | 0.581ᵇ |
-| d | results\res_BM25_query2doc_1 | 0.337ᵇᶜ | 0.359ᵇᶜ | 0.307ᵇ | 0.211ᵇ | 0.283ᵇ | nan | 0.607ᵇ |
+| a | Baseline   | 0.408ᵇᶜᵈ | 0.428ᵇᶜᵈ | 0.372ᵇᶜᵈ | 0.246ᵇᶜᵈ | 0.341ᵇᶜᵈ | nan | 0.708ᵇᶜᵈ |
+| b | Doc2Query Best | 0.239 | 0.261 | 0.225 | 0.159 | 0.196 | nan | 0.485 |
+| c | Doc2Query Triplet | 0.311ᵇ | 0.334ᵇ | 0.297ᵇ | 0.204ᵇ | 0.268ᵇ | nan | 0.581ᵇ |
+| d | Query2Doc | 0.337ᵇᶜ | 0.359ᵇᶜ | 0.307ᵇ | 0.211ᵇ | 0.283ᵇ | nan | 0.607ᵇ |
 
 To install the correct dependencies:
 
