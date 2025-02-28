@@ -6,7 +6,7 @@ This repository demonstrates using an LLM to rewrite a large dataset to improve 
 2. Query2Doc
 - Uses Meta Llama to convert the questions dataset to answers, with the goal of increasing the semantic similarity to make the IR task symmetric (answer to answer) instead of asymmetric (question to answer).
 
-What this repository finds is Doc2Query is less performant, as it removes context from the passages and in some cases favors noise over the important information you normally would want to rank higher.
+What this repository finds is Doc2Query is less performant, as it removes context from the passages and in some cases favors noise over the important information you normally would want to rank higher. Though, the baseline is still incredibly strong, showcasing how replacing the passages with the newly generated text instead of appending it (query/document expansion) is heavily prone to hallucination.
 
 | x | Model | NDCG@5 | NDCG@10 | P@5 | P@10 | MAP | BPref | MRR |
 |:- | :----  | :----- | :------ | :-- | :--- | :-- | :---- | :-- |
