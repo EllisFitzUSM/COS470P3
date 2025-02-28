@@ -1,5 +1,12 @@
 # COS470P3: Stack Exchange LLM Information Retrieval
 
+This repository demonstrates using an LLM to rewrite a large dataset to improve performance and metrics in an information retrieval task. The repository uses BM25-Okapi with the given question-answering dataset as the baseline. Two methods are used.
+1. Doc2Query
+- Uses an Meta Llama to convert the answers dataset to questions, with the goal of increasing the semantic similarity to make the IR task symmetric (question to question) instead of asymmetric (question to answer).
+2. Query2Doc
+- Uses an Meta Llama to convert the questions dataset to answers, with the goal of increasing the semantic similarity to make the IR task symmetric (answer to answer) instead of asymmetric (question to answer).
+What this repository finds is Doc2Query is less performant, as it removes context from the passages and in some cases favors noise over the important information you normall would want to rank higher.
+
 | x | Model | NDCG@5 | NDCG@10 | P@5 | P@10 | MAP | BPref | MRR |
 |:- | :----  | :----- | :------ | :-- | :--- | :-- | :---- | :-- |
 | a | results\res_BM25_1   | 0.408ᵇᶜᵈ | 0.428ᵇᶜᵈ | 0.372ᵇᶜᵈ | 0.246ᵇᶜᵈ | 0.341ᵇᶜᵈ | nan | 0.708ᵇᶜᵈ |
